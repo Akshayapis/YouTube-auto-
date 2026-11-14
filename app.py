@@ -1,4 +1,5 @@
 import os
+import time
 import requests
 from google import genai
 from google.genai import types
@@ -36,12 +37,24 @@ def get_gemini_selection():
     STORY: [Your detailed 40-50s high-quality video generation prompt matching the selected image style]
     """
     
-    response = client.models.generate_content(
-        model='gemini-3.8-flash',  # Google AI Studio recommended latest free-tier model
-        contents=prompt_text,
-    )
-    
-    text = response.text
+    # 503 / High demand error ke liye retry loop (3 koshishein)
+    max_retries = 3
+    for attempt in range(max_retries):
+        try:
+            response = client.models.generate_content(
+                model='gemini-2.5-flash',  # Stable free tier model
+                contents=prompt_text,
+            )
+            text = response.text
+            break
+        except Exception as e:
+            print(f"Attempt {attempt + 1} failed due to: {e}")
+            if attempt < max_retries - 1:
+                print("Retrying in 5 seconds...")
+                time.sleep(5)
+            else:
+                raise e
+
     chosen = "1"
     story = ""
     
