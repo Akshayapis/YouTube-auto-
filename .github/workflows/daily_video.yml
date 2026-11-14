@@ -1,42 +1,35 @@
-name: AI Video Builder Pipeline
+name: Kaggle AI Video Pipeline
 
 on:
   schedule:
-    - cron: '30 1 * * *'  # Subah 7:00 AM IST (01:30 UTC)
-    - cron: '30 12 * * *' # Shaam 6:00 PM IST (12:30 UTC)
+    - cron: '30 1 * * *'  # 7:00 AM IST
+    - cron: '30 12 * * *' # 6:00 PM IST
   workflow_dispatch:
 
 jobs:
-  run-pipeline:
+  trigger-kaggle:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GH_PAT }}
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
 
-      - name: Install Dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install requests
+      - name: Install Kaggle CLI
+        run: pip install kaggle
 
-      - name: Run AI Video Generator Script
+      - name: Authenticate Kaggle
+        run: |
+          mkdir -p ~/.kaggle
+          echo "{\"username\":\"akshaysbjfj\",\"key\":\"0898301a73cf7fd67d6e94c7c3f2af87\"}" > ~/.kaggle/kaggle.json
+          chmod 600 ~/.kaggle/kaggle.json
+
+      - name: Push and Run Script on Kaggle GPU
         env:
-          VIDEO_PROMPT: "Pahale in dono img ko deko ek ek krke dono ko to jante hoge instagram youTube pr 1 no pr hey aur dono k video kise kise hote hey bahut tip ki hote hey ok..."
-          IMAGE_URL_1: "https://i.ibb.co/PvvnF4Ss/1794655006382.png"
-          IMAGE_URL_2: "https://i.ibb.co/jvj0BxYP/1794654866543.png"
+          GH_PAT: ${{ secrets.GH_PAT }}
+          REPO_NAME: ${{ github.repository }}
         run: |
-          python app.py
-
-      - name: Commit and Push Results to GitHub
-        run: |
-          git config --global user.name "AI Video Bot"
-          git config --global user.email "bot@github.com"
-          git add generated_prompt.txt
-          git commit -m "Auto-generated video prompt and metadata for dashboard [skip ci]" || echo "No changes to commit"
-          git push
+          kaggle kernels push -p .
