@@ -37,7 +37,7 @@ def get_gemini_selection():
     """
     
     response = client.models.generate_content(
-        model='gemini-2.5-flash', # Updated working model name
+        model='gemini-3.8-flash',  # Google AI Studio recommended latest free-tier model
         contents=prompt_text,
     )
     
