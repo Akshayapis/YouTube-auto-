@@ -41,10 +41,11 @@ def get_openrouter_selection():
     """
 
     payload = {
-        "model": "google/gemini-2.5-flash", # Naya aur 100% active stable model
+        "model": "google/gemini-2.5-flash",
         "messages": [
             {"role": "user", "content": prompt_text}
-        ]
+        ],
+        "max_tokens": 1500  # Free tier credit limit ke andar rakhne ke liye fix kar diya
     }
     
     response = requests.post(url, headers=headers, json=payload)
