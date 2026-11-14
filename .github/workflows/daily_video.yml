@@ -31,10 +31,9 @@ jobs:
       - name: Run Kaggle Notebook / Script
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          VIDEO_PROMPT: "A futuristic cyberpunk city in neon lights with flying cars" # Aapka base prompt
+          VIDEO_PROMPT: "Pahale in dono img ko deko ek ek krke dono ko to jante hoge instagram youTube pr 1 no pr hey aur dono k video kise kise hote hey bahut tip ki hote hey ok. To es dono mine koi ek slict karo jis ka es time pr video baht play ho ok air fir 40s ka txt tip krdo ok bhai best ho ek dam best Story ok and 8k quality air iise img mi hey vise carictar ok bhai bahut kucch ho ok bahut log ho ok alg alg tum ko pata hoga best txt promt do"
           IMAGE_URL_1: "https://i.ibb.co/PvvnF4Ss/1794655006382.png"
           IMAGE_URL_2: "https://i.ibb.co/jvj0BxYP/1794654866543.png"
         run: |
-          # Aap yahan kaggle kernel push ya python script run kar sakte hain
           python -m pip install google-genai requests
           python app.py
