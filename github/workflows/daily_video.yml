@@ -32,8 +32,8 @@ jobs:
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           VIDEO_PROMPT: "A futuristic cyberpunk city in neon lights with flying cars" # Aapka base prompt
-          IMAGE_URL_1: "https://example.com/image1.jpg"
-          IMAGE_URL_2: "https://example.com/image2.jpg"
+          IMAGE_URL_1: "https://i.ibb.co/PvvnF4Ss/1794655006382.png"
+          IMAGE_URL_2: "https://i.ibb.co/jvj0BxYP/1794654866543.png"
         run: |
           # Aap yahan kaggle kernel push ya python script run kar sakte hain
           python -m pip install google-genai requests
