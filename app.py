@@ -18,7 +18,7 @@ def get_openrouter_selection():
     headers = {
         "Authorization": f"Bearer {OPENROUTER_API_KEY}",
         "Content-Type": "application/json",
-        "HTTP-Referer": "https://github.com/Akshayapis/YouTube-auto-", # Aapka GitHub repo link
+        "HTTP-Referer": "https://github.com/Akshayapis/YouTube-auto-",
         "X-Title": "AI Video Builder"
     }
     
@@ -41,7 +41,7 @@ def get_openrouter_selection():
     """
 
     payload = {
-        "model": "google/gemini-2.0-flash-exp:free", # OpenRouter ka free aur fast model
+        "model": "google/gemini-2.5-flash", # Naya aur 100% active stable model
         "messages": [
             {"role": "user", "content": prompt_text}
         ]
