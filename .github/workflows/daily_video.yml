@@ -26,10 +26,12 @@ jobs:
         env:
           KAGGLE_USERNAME: "akshaysbjfj"
           KAGGLE_KEY: "0898301a73cf7fd67d6e94c7c3f2af87"
+          GH_PAT: ${{ secrets.GH_PAT }}
+          REPO_NAME: ${{ github.repository }}
         run: |
           mkdir -p ~/.kaggle
           echo "{\"username\":\"$KAGGLE_USERNAME\",\"key\":\"$KAGGLE_KEY\"}" > ~/.kaggle/kaggle.json
           chmod 600 ~/.kaggle/kaggle.json
           
-          # Force push with explicit configuration check
+          # Purana queued kernel cancel karke naya push karein
           kaggle kernels push -p .
