@@ -1,8 +1,8 @@
 import os
 import requests
 
-# 1. OpenRouter API Key aur Prompts/URLs uthana
-OPENROUTER_API_KEY = os.environ.get("OPENROUTER_API_KEY", "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")
+# OpenRouter API Key directly hardcoded as requested
+OPENROUTER_API_KEY = "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"
 
 base_prompt = os.environ.get(
     "VIDEO_PROMPT", 
@@ -45,7 +45,7 @@ def get_openrouter_selection():
         "messages": [
             {"role": "user", "content": prompt_text}
         ],
-        "max_tokens": 1500  # Free tier credit limit ke andar rakhne ke liye fix kar diya
+        "max_tokens": 1500
     }
     
     response = requests.post(url, headers=headers, json=payload)
@@ -69,7 +69,6 @@ def get_openrouter_selection():
             
     return chosen, story
 
-# Run Selection
 chosen_img_num, final_story = get_openrouter_selection()
 selected_image_url = img2 if chosen_img_num == "2" else img1
 
@@ -79,3 +78,7 @@ print(f"=== OPENROUTER RESULT ===")
 print(f"Selected Image Number: {chosen_img_num}")
 print(f"Selected Image URL: {selected_image_url}")
 print(f"Generated 40-50s Video Prompt: {enhanced_prompt}")
+
+# Yahan par generated video ko save karne ka simulation / placeholder file creation taaki GitHub Pages par reflect ho
+with open("generated_prompt.txt", "w") as f:
+    f.write(enhanced_prompt)
