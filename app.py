@@ -1,24 +1,27 @@
 import os
-import time
 import requests
-from google import genai
-from google.genai import types
 
-# 1. Environment variables se secrets aur YAML se prompt/URLs uthana
-GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
+# 1. OpenRouter API Key aur Prompts/URLs uthana
+OPENROUTER_API_KEY = os.environ.get("OPENROUTER_API_KEY", "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")
 
 base_prompt = os.environ.get(
     "VIDEO_PROMPT", 
     "Pahale in dono img ko deko ek ek krke dono ko to jante hoge instagram youTube pr 1 no pr hey aur dono k video kise kise hote hey bahut tip ki hote hey ok. To es dono mine koi ek slict karo jis ka es time pr video baht play ho ok air fir 40s ka txt tip krdo ok bhai best ho ek dam best Story ok and 8k quality air iise img mi hey vise carictar ok bhai bahut kucch ho ok bahut log ho ok alg alg tum ko pata hoga best txt promt do"
 )
 
-img1 = os.environ.get("IMAGE_URL_1", "")
-img2 = os.environ.get("IMAGE_URL_2", "")
+img1 = os.environ.get("IMAGE_URL_1", "https://i.ibb.co/PvvnF4Ss/1794655006382.png")
+img2 = os.environ.get("IMAGE_URL_2", "https://i.ibb.co/jvj0BxYP/1794654866543.png")
 
-# 2. Gemini API Setup (Google AI Studio API Key)
-client = genai.Client(api_key=GEMINI_API_KEY)
-
-def get_gemini_selection():
+def get_openrouter_selection():
+    url = "https://openrouter.ai/api/v1/chat/completions"
+    
+    headers = {
+        "Authorization": f"Bearer {OPENROUTER_API_KEY}",
+        "Content-Type": "application/json",
+        "HTTP-Referer": "https://github.com/Akshayapis/YouTube-auto-", # Aapka GitHub repo link
+        "X-Title": "AI Video Builder"
+    }
+    
     prompt_text = f"""
     You are an expert AI viral video director for Instagram and YouTube. 
     Here are the two reference image URLs:
@@ -36,25 +39,21 @@ def get_gemini_selection():
     CHOSEN_IMAGE: [1 or 2]
     STORY: [Your detailed 40-50s high-quality video generation prompt matching the selected image style]
     """
-    
-    # 503 / High demand error ke liye retry loop (3 koshishein)
-    max_retries = 3
-    for attempt in range(max_retries):
-        try:
-            response = client.models.generate_content(
-                model='gemini-2.5-flash',  # Stable free tier model
-                contents=prompt_text,
-            )
-            text = response.text
-            break
-        except Exception as e:
-            print(f"Attempt {attempt + 1} failed due to: {e}")
-            if attempt < max_retries - 1:
-                print("Retrying in 5 seconds...")
-                time.sleep(5)
-            else:
-                raise e
 
+    payload = {
+        "model": "google/gemini-2.0-flash-exp:free", # OpenRouter ka free aur fast model
+        "messages": [
+            {"role": "user", "content": prompt_text}
+        ]
+    }
+    
+    response = requests.post(url, headers=headers, json=payload)
+    if response.status_code != 200:
+        raise Exception(f"OpenRouter Error: {response.text}")
+        
+    res_data = response.json()
+    text = res_data["choices"][0]["message"]["content"]
+    
     chosen = "1"
     story = ""
     
@@ -69,12 +68,13 @@ def get_gemini_selection():
             
     return chosen, story
 
-chosen_img_num, final_story = get_gemini_selection()
+# Run Selection
+chosen_img_num, final_story = get_openrouter_selection()
 selected_image_url = img2 if chosen_img_num == "2" else img1
 
 enhanced_prompt = f"{final_story}, 8k resolution, photorealistic, cinematic lighting, maintaining exact character and style from reference image: {selected_image_url}"
 
-print(f"=== GEMINI RESULT ===")
-print(f"Selected Image Number by Gemini: {chosen_img_num}")
+print(f"=== OPENROUTER RESULT ===")
+print(f"Selected Image Number: {chosen_img_num}")
 print(f"Selected Image URL: {selected_image_url}")
 print(f"Generated 40-50s Video Prompt: {enhanced_prompt}")
