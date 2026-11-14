@@ -18,18 +18,18 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: Install Kaggle CLI
-        run: pip install kaggle
+      - name: Install Dependencies
+        run: |
+          pip install kaggle requests
 
-      - name: Authenticate Kaggle
+      - name: Authenticate and Push to Kaggle
+        env:
+          KAGGLE_USERNAME: "akshaysbjfj"
+          KAGGLE_KEY: "0898301a73cf7fd67d6e94c7c3f2af87"
         run: |
           mkdir -p ~/.kaggle
-          echo "{\"username\":\"akshaysbjfj\",\"key\":\"0898301a73cf7fd67d6e94c7c3f2af87\"}" > ~/.kaggle/kaggle.json
+          echo "{\"username\":\"$KAGGLE_USERNAME\",\"key\":\"$KAGGLE_KEY\"}" > ~/.kaggle/kaggle.json
           chmod 600 ~/.kaggle/kaggle.json
-
-      - name: Push and Run Script on Kaggle GPU
-        env:
-          GH_PAT: ${{ secrets.GH_PAT }}
-          REPO_NAME: ${{ github.repository }}
-        run: |
+          
+          # Force push with explicit configuration check
           kaggle kernels push -p .
