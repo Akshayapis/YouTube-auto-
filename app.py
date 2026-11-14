@@ -6,7 +6,6 @@ from google.genai import types
 # 1. Environment variables se secrets aur YAML se prompt/URLs uthana
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
 
-# Aapka exact Hindi prompt jo YAML se aayega
 base_prompt = os.environ.get(
     "VIDEO_PROMPT", 
     "Pahale in dono img ko deko ek ek krke dono ko to jante hoge instagram youTube pr 1 no pr hey aur dono k video kise kise hote hey bahut tip ki hote hey ok. To es dono mine koi ek slict karo jis ka es time pr video baht play ho ok air fir 40s ka txt tip krdo ok bhai best ho ek dam best Story ok and 8k quality air iise img mi hey vise carictar ok bhai bahut kucch ho ok bahut log ho ok alg alg tum ko pata hoga best txt promt do"
@@ -38,7 +37,7 @@ def get_gemini_selection():
     """
     
     response = client.models.generate_content(
-        model='gemini-2.5-flash',
+        model='gemini-2.0-flash', # Fixed model name
         contents=prompt_text,
     )
     
@@ -53,15 +52,13 @@ def get_gemini_selection():
             story = line.replace("STORY:", "").strip()
             
     if not story:
-        story = text # Fallback agar format thoda upar-neeche ho jaye
+        story = text 
             
     return chosen, story
 
-# Run Gemini selection
 chosen_img_num, final_story = get_gemini_selection()
 selected_image_url = img2 if chosen_img_num == "2" else img1
 
-# Final prompt jo video model ke paas jayega
 enhanced_prompt = f"{final_story}, 8k resolution, photorealistic, cinematic lighting, maintaining exact character and style from reference image: {selected_image_url}"
 
 print(f"=== GEMINI RESULT ===")
