@@ -1,0 +1,13 @@
+{
+  "id": "akshaysbjfj/ai-video-builder",
+  "title": "ai-video-builder",
+  "code_file": "kaggle_script.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": "true",
+  "enable_gpu": "true",
+  "enable_internet": "true",
+  "dataset_sources": [],
+  "competition_sources": [],
+  "kernel_sources": []
+}
