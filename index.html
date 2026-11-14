@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Video Builder Dashboard</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #0f172a; color: #f8fafc; margin: 0; padding: 20px; }
+        .container { max-width: 900px; margin: auto; }
+        h1 { text-align: center; color: #38bdf8; }
+        .video-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 30px; }
+        .card { background: #1e293b; border-radius: 10px; padding: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+        video { width: 100%; border-radius: 8px; }
+        .meta { font-size: 14px; color: #94a3b8; margin: 10px 0; }
+        .btn { display: inline-block; background: #0284c7; color: white; padding: 8px 15px; text-decoration: none; border-radius: 5px; font-weight: bold; margin-top: 5px; }
+        .btn:hover { background: #0369a1; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>AI Generated Videos Dashboard</h1>
+        <p style="text-align: center; color: #94a3b8;">Automated 7 AM & 6 PM Runs via Gemini & Kaggle/HuggingFace</p>
+        
+        <div class="video-grid" id="videoContainer">
+            <!-- Dynamic Videos will load here -->
+            <div class="card">
+                <video controls src="output_video.mp4"></video>
+                <div class="meta">Date: 14 Nov 2026 | Time: 07:00 AM</div>
+                <a href="output_video.mp4" class="btn" download>Download Video</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
