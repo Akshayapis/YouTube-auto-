@@ -1,0 +1,40 @@
+name: AI Video Builder Pipeline
+
+on:
+  schedule:
+    - cron: '30 1 * * *'  # Subah 7:00 AM IST (01:30 UTC)
+    - cron: '30 12 * * *' # Shaam 6:00 PM IST (12:30 UTC)
+  workflow_dispatch:
+
+jobs:
+  run-kaggle-pipeline:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install Kaggle CLI
+        run: |
+          pip install kaggle
+
+      - name: Authenticate Kaggle
+        run: |
+          mkdir -p ~/.kaggle
+          echo "{\"username\":\"${{ secrets.KAGGLE_USERNAME }}\",\"key\":\"${{ secrets.KAGGLE_KEY }}\"}" > ~/.kaggle/kaggle.json
+          chmod 600 ~/.kaggle/kaggle.json
+
+      - name: Run Kaggle Notebook / Script
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          VIDEO_PROMPT: "A futuristic cyberpunk city in neon lights with flying cars" # Aapka base prompt
+          IMAGE_URL_1: "https://example.com/image1.jpg"
+          IMAGE_URL_2: "https://example.com/image2.jpg"
+        run: |
+          # Aap yahan kaggle kernel push ya python script run kar sakte hain
+          python -m pip install google-genai requests
+          python app.py
