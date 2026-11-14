@@ -5,7 +5,8 @@ from google.genai import types
 
 # 1. Environment variables se secrets uthana
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
-base_prompt = os.environ.get("VIDEO_PROMPT", "Cinematic drone shot of mountains")
+base_prompt = os.environ.get("VIDEO_PROMPT", "Pahale in dono img ko deko  ekek krke  dono ko to jante hoge instagram youTube pr   1 no  pr hey aur  dono k video kise kise hote hey bahut tip ki  hote hey ok  ek
+To  es dono mine koi ek slict karo jis ka   es time pr video baht play ho ok air fir  40s ka  txt tip krdo ok bhai   best ho  ek dam best Story  ok  and  8k quality air iise img mi hey vise carictar ok bhai bahut kucch ho ok bahut log ho ok alg alg tum ko pata hoga best txt promt do aur batana ki  tum ni kia number wale img ki  uper txt tip kiay  ek promt dena  koi 2 mise ek chuno us ka promt do best ok")
 img1 = os.environ.get("IMAGE_URL_1", "")
 img2 = os.environ.get("IMAGE_URL_2", "")
 
